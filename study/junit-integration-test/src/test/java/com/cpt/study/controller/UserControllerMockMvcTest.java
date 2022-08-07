@@ -27,12 +27,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class UserControllerMockMvcTest {
 
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private UserService userService;
@@ -41,7 +41,7 @@ class UserControllerMockMvcTest {
     private UserRepository userRepository;
 
     @BeforeEach
-    public void setUpServer(WebApplicationContext webApplicationContext) throws IOException {
+    public void setUpMock(WebApplicationContext webApplicationContext) throws IOException {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
