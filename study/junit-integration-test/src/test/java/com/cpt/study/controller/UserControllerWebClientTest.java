@@ -4,7 +4,6 @@ import com.cpt.study.domain.User;
 import com.cpt.study.model.UserDto;
 import com.cpt.study.repository.UserRepository;
 import com.cpt.study.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,32 +11,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.reactive.function.BodyInserters;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserControllerTest {
+class UserControllerWebClientTest {
 
     private WebTestClient webTestClient;
-
-    private MockMvc mockMvc;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private UserService userService;
@@ -49,12 +36,10 @@ class UserControllerTest {
     private Integer port;
 
     @BeforeEach
-    public void setUpServer(WebApplicationContext webApplicationContext) throws IOException {
+    public void setUpServer() throws IOException {
         this.webTestClient = WebTestClient.bindToServer()
                 .baseUrl("http://127.0.0.1:" + port)
                 .build();
-
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @BeforeEach
@@ -88,19 +73,20 @@ class UserControllerTest {
         // then
         exchange
                 .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(System.out::println)
-                .jsonPath("$.result").isEqualTo("SUCCESS")
-                .jsonPath("$.success").isEqualTo(true)
-                .jsonPath("$.data").isMap()
-                .jsonPath("$.data.content[0].userId").exists()
-                .jsonPath("$.data.content[0].userId").isEqualTo(1)
-                .jsonPath("$.data.content[0].userName").isEqualTo("하츄핑")
-                .jsonPath("$.data.content[0].userAge").isEqualTo(10)
-                .jsonPath("$.data.content[0].userEmail").isEqualTo("chu@email.com")
-                .jsonPath("$.data.content[0].userGender").isEqualTo("FEMALE")
-                .jsonPath("$.data.content[1].userId").exists()
-                .jsonPath("$.data.content[2].userId").exists()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody().consumeWith(System.out::println)
+                .jsonPath("$.result").value(is("SUCCESS"))
+                .jsonPath("$.success").value(is(true))
+                .jsonPath("$.data").value(isA(Map.class))
+                .jsonPath("$.data.content").value(isA(Iterable.class))
+                .jsonPath("$.data.content[0].userId").value(isA(Number.class))
+                .jsonPath("$.data.content[0].userId").value(is(1))
+                .jsonPath("$.data.content[0].userName").value(is("하츄핑"))
+                .jsonPath("$.data.content[0].userAge").value(is(10))
+                .jsonPath("$.data.content[0].userEmail").value(is("chu@email.com"))
+                .jsonPath("$.data.content[0].userGender").value(is("FEMALE"))
+                .jsonPath("$.data.content[1]").exists()
+                .jsonPath("$.data.content[2]").exists()
         ;
     }
 
@@ -115,16 +101,17 @@ class UserControllerTest {
         // then
         exchange
                 .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(System.out::println)
-                .jsonPath("$.result").isEqualTo("SUCCESS")
-                .jsonPath("$.success").isEqualTo(true)
-                .jsonPath("$.data").isMap()
-                .jsonPath("$.data.userId").isEqualTo(2)
-                .jsonPath("$.data.userName").isEqualTo("믿어핑")
-                .jsonPath("$.data.userAge").isEqualTo(11)
-                .jsonPath("$.data.userEmail").isEqualTo("believe@email.com")
-                .jsonPath("$.data.userGender").isEqualTo("MALE")
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody().consumeWith(System.out::println)
+                .jsonPath("$.result").value(is("SUCCESS"))
+                .jsonPath("$.success").value(is(true))
+                .jsonPath("$.data").value(isA(Map.class))
+                .jsonPath("$.data.userId").value(isA(Number.class))
+                .jsonPath("$.data.userId").value(is(2))
+                .jsonPath("$.data.userName").value(is("믿어핑"))
+                .jsonPath("$.data.userAge").value(is(11))
+                .jsonPath("$.data.userEmail").value(is("believe@email.com"))
+                .jsonPath("$.data.userGender").value(is("MALE"))
         ;
     }
 
@@ -139,11 +126,11 @@ class UserControllerTest {
         // then
         exchange
                 .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(System.out::println)
-                .jsonPath("$.result").isEqualTo("FAILURE")
-                .jsonPath("$.success").isEqualTo(false)
-                .jsonPath("$.data.errorCode").isEqualTo("U101")
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody().consumeWith(System.out::println)
+                .jsonPath("$.result").value(is("FAILURE"))
+                .jsonPath("$.success").value(is(false))
+                .jsonPath("$.data.errorCode").value(is("U101"))
         ;
     }
 
@@ -161,16 +148,17 @@ class UserControllerTest {
         // when
         WebTestClient.ResponseSpec exchange = webTestClient.post().uri("/api/v1/users")
                 .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(request))
                 .exchange();
 
         // then
         exchange
                 .expectStatus().isCreated()
-                .expectBody()
-                .consumeWith(System.out::println)
-                .jsonPath("$.result").isEqualTo("SUCCESS")
-                .jsonPath("$.success").isEqualTo(true)
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody().consumeWith(System.out::println)
+                .jsonPath("$.result").value(is("SUCCESS"))
+                .jsonPath("$.success").value(is(true))
                 .jsonPath("$.data.userId").exists()
         ;
     }
@@ -185,22 +173,24 @@ class UserControllerTest {
         // when
         WebTestClient.ResponseSpec exchange = webTestClient.post().uri("/api/v1/users")
                 .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.CONTENT_TYPE, String.valueOf(MediaType.APPLICATION_JSON))
                 .body(BodyInserters.fromValue(request))
                 .exchange();
 
         // then
         exchange
                 .expectStatus().isBadRequest()
-                .expectBody()
-                .consumeWith(System.out::println)
-                .jsonPath("$.result").isEqualTo("FAILURE")
-                .jsonPath("$.success").isEqualTo(false)
-                .jsonPath("$.data.errors.length()").isEqualTo(4)
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody().consumeWith(System.out::println)
+                .jsonPath("$.result").value(is("FAILURE"))
+                .jsonPath("$.success").value(is(false))
+                .jsonPath("$.data.errors").value(hasSize(4))
         ;
     }
 
     @Test
-    @DisplayName("[사용자 단건 등록] userAge, userEmail 올바른 포맷이 아님")
+    @DisplayName("[사용자 단건 등록] invalid 파라미터, userAge, userEmail")
     public void test06() throws Exception {
         // given
         UserDto.CreateRequest request = UserDto.CreateRequest.builder()
@@ -211,35 +201,23 @@ class UserControllerTest {
                 .build();
 
         // when
-        ResultActions action = mockMvc.perform(post("/api/v1/users")
-                .content(objectMapper.writeValueAsString(request))
+        WebTestClient.ResponseSpec exchange = webTestClient.post().uri("/api/v1/users")
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        // then
-        action
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.result", is("FAILURE")))
-                .andExpect(jsonPath("$.success", is(false)))
-                .andExpect(jsonPath("$.data.errorCode", is("C002")))
-                .andExpect(jsonPath("$.data.errors", hasSize(2)))
-                .andExpect(jsonPath("$.data.errors[?(@.field == 'userAge')]").exists())
-                .andExpect(jsonPath("$.data.errors[?(@.field == 'userEmail')]").exists())
-        ;
-
-        // when
-        /*WebTestClient.ResponseSpec exchange = webTestClient.post().uri("/api/v1/users")
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(request))
-                .exchange();*/
+                .exchange();
 
         // then
-        /*String responseBody = exchange
-                //.expectStatus().isBadRequest()
-                .expectBody(String.class)
-                .returnResult()
-                .getResponseBody();
-        System.out.println("responseBody = " + responseBody);*/
+        exchange
+                .expectStatus().isBadRequest()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody().consumeWith(System.out::println)
+                .jsonPath("$.result").value(is("FAILURE"))
+                .jsonPath("$.success").value(is(false))
+                .jsonPath("$.data.errorCode").value(is("C002"))
+                .jsonPath("$.data.errors").value(hasSize(2))
+                .jsonPath("$.data.errors[?(@.field == 'userAge')]").exists()
+                .jsonPath("$.data.errors[?(@.field == 'userEmail')]").exists()
+        ;
     }
 }
