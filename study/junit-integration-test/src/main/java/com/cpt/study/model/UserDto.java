@@ -2,10 +2,9 @@ package com.cpt.study.model;
 
 import com.cpt.study.domain.User;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 public class UserDto {
 
@@ -30,10 +29,11 @@ public class UserDto {
         private String userName;
 
         @NotNull(message = "[필수값] 똑바로 넣으시면 200원 드립니다,,")
+        @Range(min = 0, max = 120)
         private Integer userAge;
 
         @NotBlank(message = "[필수값] 똑바로 넣으시면 300원 드립니다,,")
-        @Email(message = "[경고장] 올바른 이메일 형식이어야 합니다.")
+        @Email(message = "[경고] 올바른 이메일 형식이어야 합니다.")
         private String userEmail;
 
         @NotNull(message = "[필수값] 똑바로 넣으시면 400원 드립니다,,")
