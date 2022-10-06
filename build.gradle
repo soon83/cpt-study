@@ -24,6 +24,7 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'jacoco'
 
     configurations {
         compileOnly {
@@ -45,6 +46,42 @@ subprojects {
 
     test {
         useJUnitPlatform()
+
+        finalizedBy 'jacocoTestReport'
+    }
+
+    jacoco {
+        toolVersion = '0.8.6'
+    }
+
+    jacocoTestReport {
+        reports {
+            html.enabled true
+            xml.enabled true
+            csv.enabled false
+
+            html.destination file("$buildDir/jacoco.html")
+            xml.destination file("$buildDir/jacoco.xml")
+            csv.destination file("$buildDir/jacoco.csv")
+        }
+
+        finalizedBy 'jacocoTestCoverageVerification'
+    }
+
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                enabled = true
+                element = 'BUNDLE'
+
+                limit {
+                    counter = 'LINE'
+                    value = 'COVEREDRATIO'
+                    minimum = 0.30
+                }
+                excludes = []
+            }
+        }
     }
 }
 
