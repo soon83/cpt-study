@@ -1,4 +1,4 @@
-package com.cpt.study.controller;
+package com.cpt.test.controller;
 
 import com.cpt.study.domain.User;
 import com.cpt.study.model.UserDto;

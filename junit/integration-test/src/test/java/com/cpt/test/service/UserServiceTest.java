@@ -1,7 +1,9 @@
-package com.cpt.study.service;
+package com.cpt.test.service;
 
 import com.cpt.study.domain.User;
 import com.cpt.study.repository.UserRepository;
+import com.cpt.study.service.NotificationService;
+import com.cpt.study.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
