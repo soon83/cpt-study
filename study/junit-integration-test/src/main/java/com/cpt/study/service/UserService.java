@@ -6,11 +6,14 @@ import com.cpt.study.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.management.Notification;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    private final NotificationService notificationService;
 
     private final UserRepository userRepository;
 
@@ -24,7 +27,15 @@ public class UserService {
     }
 
     public User createUser(final User user) {
-        return userRepository.save(user);
+        User createdUser = userRepository.save(user);
+
+        // TODO 회원가입 성공 push
+        if (createdUser.getEmail() != null && !createdUser.getEmail().isBlank()) {
+            notificationService.pushEmail();
+        }
+        notificationService.pushSms();
+
+        return createdUser;
     }
 
     public void updateUser(final Long userId, final User user) {
