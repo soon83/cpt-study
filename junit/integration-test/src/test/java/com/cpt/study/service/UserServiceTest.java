@@ -1,4 +1,4 @@
-package com.cpt.test.service;
+package com.cpt.study.service;
 
 import com.cpt.study.domain.User;
 import com.cpt.study.repository.UserRepository;

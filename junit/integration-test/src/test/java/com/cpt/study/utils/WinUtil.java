@@ -1,4 +1,4 @@
-package com.cpt.test.utils;
+package com.cpt.study.utils;
 
 import org.springframework.util.ObjectUtils;
 
