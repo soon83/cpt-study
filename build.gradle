@@ -96,7 +96,7 @@ subprojects {
     }
 }
 
-['study', 'test'].each {
+['junit', 'springboot'].each {
     def subProjectDir = new File(projectDir, it)
     subProjectDir.eachDir { dir ->
         def projectName = ":${it}-${dir.name}"
