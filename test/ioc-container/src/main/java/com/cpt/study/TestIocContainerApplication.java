@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebAp
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
@@ -19,7 +20,7 @@ import java.util.Arrays;
 
 //@ComponentScan(basePackages = "com.cpt.study")
 //@ComponentScan(basePackageClasses = TestIocContainerApplication.class)
-@SpringBootApplication
+//@SpringBootApplication
 public class TestIocContainerApplication implements InitializingBean, DisposableBean {
 
     public static void main(String[] args) {
@@ -55,14 +56,26 @@ public class TestIocContainerApplication implements InitializingBean, Disposable
 
 
         // 5
-//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestIocContainerApplication.class);
-//        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-//        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
-//        TestUser user = (TestUser) applicationContext.getBean("testUser");
-//        user.attack();
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestIocContainerApplication.class);
+        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
+        TestUser user = (TestUser) applicationContext.getBean("testUser");
+        user.attack();
 
-        SpringApplication.run(TestIocContainerApplication.class, args);
+        // 6
+//        SpringApplication.run(TestIocContainerApplication.class, args);
     }
+
+    @Bean
+    public TestWeapon testWeapon() {
+        return new TestGun();
+    }
+
+    @Bean
+    public TestUser testUser(TestWeapon testWeapon) {
+        return new TestUser(testWeapon);
+    }
+
 
 
     private ApplicationContext applicationContext;

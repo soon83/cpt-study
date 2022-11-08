@@ -2,7 +2,7 @@ package com.cpt.study;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class TestUser {
 
     private TestWeapon testWeapon;
