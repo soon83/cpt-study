@@ -1,6 +1,6 @@
 package com.cpt.study;
 
-public interface Weapon {
+public interface TestWeapon {
 
     void attack();
 }

@@ -33,24 +33,24 @@ public class TestIocContainerApplication implements InitializingBean, Disposable
 
 
         // 2
-//        Gun gun = new Gun();
-//        User user = new User();
-//        User user = new User(gun);
+//        TestGun gun = new TestGun();
+//        TestUser user = new TestUser();
+//        TestUser user = new TestUser(gun);
 //        user.attack();
 
 
         // 3
-//        Weapon weapon = new Gun();
-//        Weapon weapon = new Knife();
-//        User user = new User(weapon);
+//        TestWeapon weapon = new TestGun();
+//        TestWeapon weapon = new TestKnife();
+//        TestUser user = new TestUser(weapon);
 //        user.attack();
 
 
         // 4
-//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application.xml");
+//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("test-application.xml");
 //        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
 //        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
-//        User user = (User) applicationContext.getBean("user");
+//        TestUser user = (TestUser) applicationContext.getBean("testUser");
 //        user.attack();
 
 
@@ -58,7 +58,7 @@ public class TestIocContainerApplication implements InitializingBean, Disposable
 //        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestIocContainerApplication.class);
 //        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
 //        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
-//        User user = (User) applicationContext.getBean("user");
+//        TestUser user = (TestUser) applicationContext.getBean("testUser");
 //        user.attack();
 
         SpringApplication.run(TestIocContainerApplication.class, args);

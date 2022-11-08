@@ -3,7 +3,7 @@ package com.cpt.study;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Gun implements Weapon {
+public class TestGun implements TestWeapon {
 
     @Override
     public void attack() {
