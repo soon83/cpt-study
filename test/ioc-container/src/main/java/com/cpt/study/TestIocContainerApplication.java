@@ -1,27 +1,13 @@
 package com.cpt.study;
 
 
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.util.Arrays;
 
 //@ComponentScan(basePackages = "com.cpt.study")
 //@ComponentScan(basePackageClasses = TestIocContainerApplication.class)
-//@SpringBootApplication
-public class TestIocContainerApplication implements InitializingBean, DisposableBean {
+@SpringBootApplication
+public class TestIocContainerApplication {
 
     public static void main(String[] args) {
         /**
@@ -56,63 +42,13 @@ public class TestIocContainerApplication implements InitializingBean, Disposable
 
 
         // 5
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestIocContainerApplication.class);
-        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
-        TestUser user = (TestUser) applicationContext.getBean("testUser");
-        user.attack();
+//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestIocContainerApplication.class);
+//        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+//        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
+//        TestUser user = (TestUser) applicationContext.getBean("testUser");
+//        user.attack();
 
         // 6
-//        SpringApplication.run(TestIocContainerApplication.class, args);
-    }
-
-    @Bean
-    public TestWeapon testWeapon() {
-        return new TestGun();
-    }
-
-    @Bean
-    public TestUser testUser(TestWeapon testWeapon) {
-        return new TestUser(testWeapon);
-    }
-
-
-
-    private ApplicationContext applicationContext;
-
-    public TestIocContainerApplication(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("InitializingBean");
-
-//        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-//        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
-//
-//        User user = (User) applicationContext.getBean("user");
-//        user.attack();
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        System.out.println("DisposableBean");
-    }
-
-    @PostConstruct
-    public void postConstruct() throws Exception {
-        System.out.println("시작할 때 PostConstruct");
-
-//        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-//        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
-//
-//        User user = (User) applicationContext.getBean("user");
-//        user.attack();
-    }
-
-    @PreDestroy
-    public void preDestroy() throws Exception {
-        System.out.println("종료할 때 PreDestroy");
+        SpringApplication.run(TestIocContainerApplication.class, args);
     }
 }

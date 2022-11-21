@@ -1,6 +1,6 @@
 package com.cpt.study;
 
-public class TestKnife implements TestWeapon {
+public class Knife implements Weapon {
 
     @Override
     public void attack() {

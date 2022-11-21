@@ -1,4 +1,4 @@
-package com.cpt.study;
+package com.cpt.study.model;
 
 public interface TestWeapon {
 

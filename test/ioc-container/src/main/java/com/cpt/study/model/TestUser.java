@@ -1,17 +1,20 @@
-package com.cpt.study;
+package com.cpt.study.model;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-//@Component
+@Component
+@Controller
+@Service
+@Repository
+@Configuration
 public class TestUser {
 
     private TestWeapon testWeapon;
 
-    public TestUser() {
-    }
-
-
-//    @Autowired
     public TestUser(TestWeapon testWeapon) {
         this.testWeapon = testWeapon;
     }
