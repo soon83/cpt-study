@@ -1,5 +1,8 @@
-package com.cpt.study;
+package com.cpt.study.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Knife implements Weapon {
 
     @Override

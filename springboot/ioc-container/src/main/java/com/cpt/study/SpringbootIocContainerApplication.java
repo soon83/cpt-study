@@ -1,8 +1,12 @@
 package com.cpt.study;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import javax.annotation.PostConstruct;
+import javax.swing.*;
 
 @SpringBootApplication
 //@ComponentScan(basePackages = "com.cpt.study")
@@ -10,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 public class SpringbootIocContainerApplication {
 
     public static void main(String[] args) {
-        System.out.println("=========================");
 //        Weapon weapon = new Knife();
 //        User user = new User(weapon);
 //        user.attack();
@@ -27,6 +30,11 @@ public class SpringbootIocContainerApplication {
         User user = (User) applicationContext.getBean("user");
         user.attack();*/
 
-        SpringApplication.run(SpringbootIocContainerApplication.class, args);
+        //SpringApplication.run(SpringbootIocContainerApplication.class, args);
+        SpringApplication application = new SpringApplication(SpringbootIocContainerApplication.class);
+        application.setWebApplicationType(WebApplicationType.SERVLET);
+        application.run(args);
+        // command line interface - cli
+        // graphic user interface - gui
     }
 }
